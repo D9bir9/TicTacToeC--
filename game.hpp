@@ -12,6 +12,8 @@ class Game {
         Board board;
         Player player1;
         Player player2;
+        std::string player1Name;
+        std::string player2Name;
         int currentPlayer = 1;
 
         // Function to read a valid move from the player
@@ -19,7 +21,7 @@ class Game {
             int position = 0;
 
             while (true) {
-                std::cout << "Player " << currentPlayer << ", enter your move (1-9): ";
+                std::cout << (currentPlayer == 1 ? player1Name : player2Name) << ", enter your move (1-9): ";
                 if (!(std::cin >> position)) {
                     std::cout << "Invalid input! Please enter a number between 1 and 9." << std::endl;
                     std::cin.clear();
@@ -60,7 +62,7 @@ class Game {
 
     public:
         // Constructor to initialize the game with two players and their respective symbols
-        Game(char sym1, char sym2) : player1(sym1), player2(sym2) {}
+        Game(char sym1, char sym2, std::string name1 = "Player 1", std::string name2 = "Player 2") : player1(sym1), player2(sym2), player1Name(name1), player2Name(name2) {}
 
         // Function to start the game loop, it contains the main logic for player turns, checking for wins or draws, and handling replay.
         void start() {
@@ -87,12 +89,12 @@ class Game {
                 // Check for wins or draws after each move
                 if (board.checkWin(player1.getSymbol())) {
                     board.renderBoard();
-                    std::cout << "Player 1 wins!" << std::endl;
+                    std::cout << player1Name << " wins!" << std::endl;
                     player1.incrementScore();
                     break;
                 } else if (board.checkWin(player2.getSymbol())) {
                     board.renderBoard();
-                    std::cout << "Player 2 wins!" << std::endl;
+                    std::cout << player2Name << " wins!" << std::endl;
                     player2.incrementScore();
                     break;
                 } else if (board.isFull()) {
@@ -103,7 +105,7 @@ class Game {
             }
 
             // Display the scores of both players after the game ends
-            std::cout << "Scores:\nPlayer 1: " << player1.getScore() << "\nPlayer 2: " << player2.getScore() << std::endl;
+            std::cout << "Scores:\n" << player1Name << ": " << player1.getScore() << "\n" << player2Name << ": " << player2.getScore() << std::endl;
 
             // Prompt the players to decide if they want to play again
             char choice = readReplayChoice();
