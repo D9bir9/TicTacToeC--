@@ -1,16 +1,22 @@
 #pragma once
 #include <iostream>
+#define EMPTY ' '
 
 class Board {
     private:
+    // 3x3 Game board initialized with empty spaces
         char board[3][3] = {
-            {' ', ' ', ' '},
-            {' ', ' ', ' '},
-            {' ', ' ', ' '}
+            {EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY}
         };
     
     public:
+        // replay becomes true if the player tries to make a move in an already occupied position,
+        // or if the player enters an invalid position. This will prompt the player to re-enter their move.
         bool replay = false;
+
+        // Function to display the positions on the board for the players
         void showPositions() {
             for (int i = 0; i < 3; i++) {
                 std::cout << "|";
@@ -21,6 +27,7 @@ class Board {
             }
         }
 
+        // Function to render the current state of the board
         void renderBoard() {
             for (int i = 0; i < 3; i++) {
                 std::cout << "|";
@@ -31,6 +38,7 @@ class Board {
             }
         }
 
+        // Function to update the board with the player's move
         void updateBoard(int position, char player) {
             if (position < 1 || position > 9) {
                 std::cout << "Invalid position! Please choose a number between 1 and 9." << std::endl;
@@ -39,7 +47,7 @@ class Board {
             }
             int row = (position - 1) / 3;
             int col = (position - 1) % 3;
-            if (board[row][col] == ' ') {
+            if (board[row][col] == EMPTY) {
                 board[row][col] = player;
                 replay = false;
             } else {
@@ -48,6 +56,7 @@ class Board {
             }
         }
 
+        // Function to check if a player has won the game
         bool checkWin(char player) {
             // Check rows and columns
             for (int i = 0; i < 3; i++) {
@@ -64,10 +73,11 @@ class Board {
             return false;
         }
 
+        // Function to check if the board is full (i.e., a draw)
         bool isFull() {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (board[i][j] == ' ') {
+                    if (board[i][j] == EMPTY) {
                         return false;
                     }
                 }
@@ -75,10 +85,11 @@ class Board {
             return true;
         }
 
+        // Function to reset the board to its initial empty state
         void resetBoard() {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    board[i][j] = ' ';
+                    board[i][j] = EMPTY;
                 }
             }
         }

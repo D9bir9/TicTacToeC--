@@ -4,15 +4,17 @@
 #include <limits>
 
 #include "player.hpp"
-#include <limits>
+#include "board.hpp"
 
 class Game {
     private:
+    // Game is composed of a board and two players. The currentPlayer variable keeps track of whose turn it is.
         Board board;
         Player player1;
         Player player2;
         int currentPlayer = 1;
 
+        // Function to read a valid move from the player
         int readValidMove() {
             int position = 0;
 
@@ -34,6 +36,7 @@ class Game {
             }
         }
 
+        // Function to read the player's choice to replay or not
         char readReplayChoice() {
             char choice = 'n';
 
@@ -56,17 +59,22 @@ class Game {
         }
 
     public:
+        // Constructor to initialize the game with two players and their respective symbols
         Game(char sym1, char sym2) : player1(sym1), player2(sym2) {}
 
+        // Function to start the game loop, it contains the main logic for player turns, checking for wins or draws, and handling replay.
         void start() {
             while (true) {
+                // Display the positions for the players
                 board.showPositions();
                 std::cout << "\nCurrent Board:\n" << std::endl;
+                // Render the current state of the board
                 board.renderBoard();
 
+                // Read a valid move from the current player
                 int position = readValidMove();
 
-
+                // Update the board with the current player's move and switch turns if the move was valid
                 if (currentPlayer == 1) {
                     player1.move(board, position);
                     if (!board.replay) currentPlayer = 2;
@@ -75,6 +83,8 @@ class Game {
                     if (!board.replay) currentPlayer = 1;
                 }
 
+
+                // Check for wins or draws after each move
                 if (board.checkWin(player1.getSymbol())) {
                     board.renderBoard();
                     std::cout << "Player 1 wins!" << std::endl;
@@ -92,13 +102,15 @@ class Game {
                 }
             }
 
+            // Display the scores of both players after the game ends
             std::cout << "Scores:\nPlayer 1: " << player1.getScore() << "\nPlayer 2: " << player2.getScore() << std::endl;
 
+            // Prompt the players to decide if they want to play again
             char choice = readReplayChoice();
             if (choice == 'y') {
-                board = Board();
-                currentPlayer = 1;
-                start();
+                board.resetBoard(); // Reset the board for a new game
+                currentPlayer = 2; // Reset to player 2 for the next game, switch starting player for fairness
+                start(); // Start a new game
             }
         }
 };
