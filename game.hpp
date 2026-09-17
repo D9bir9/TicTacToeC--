@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "player.hpp"
+#include <limits>
 
 class Game {
     private:
@@ -64,6 +65,7 @@ class Game {
                 board.renderBoard();
 
                 int position = readValidMove();
+
 
                 if (currentPlayer == 1) {
                     player1.move(board, position);
