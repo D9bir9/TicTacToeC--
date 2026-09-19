@@ -93,4 +93,9 @@ class Board {
                 }
             }
         }
+
+        char cell(int position) const {
+            if (position < 1 || position > 9) return EMPTY;
+            return board[(position - 1) / 3][(position - 1) % 3];
+        }
 };
